@@ -8,7 +8,8 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: "Arial";
+  font: normal 1em/1.5 "Arial";
+  color: rgb(77, 72, 72)
 }
 
 h1 {
@@ -18,20 +19,67 @@ h1 {
 
 ul {
   list-style: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+li {
+  color: rgb(54, 53, 53);
+  padding: 20px;
+  border-bottom: 1px solid;
+}
+
+label {
+  margin-left: 20px;
 }
 
 .container {
   width: 90%;
-  padding: 5%;
+  padding: 1%;
   margin: 3% auto;
-  border: 1px solid;
 }
 
 .header {
   width: 100%;
+}
+
+.question {
+  margin-top: 50px;
+}
+
+.next-button-container {
+  width: 100%;
   text-align: center;
 }
 
-.question-container {
+.next-button {
+  width: 100%;
+  background: linear-gradient(10deg, #EE6640 0%, #FA4D6D 100%);
+  border: none;
+  color: white;
+  padding: 15px 32px;
   text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.5em;
+  margin: 2em 2px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+@media screen and (min-width: 600px) {
+  .container {
+    width: 70%;
+  }
+  .header {
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .container {
+    width: 60%;
+  }
+
 }
