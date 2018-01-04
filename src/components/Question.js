@@ -1,43 +1,36 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const QuestionText = () => <h2>What is your name?.</h2>
+const QuestionText = (props) => <h2>{props.text}</h2>
 
-const Choices = () => {
+const Choices = (props) => {
+  const optionList = props.choices.map((choice, index) => {
+    return(
+      <li key={index}>
+        <input type="radio" id={index}
+        name="choice" value={choice.text} />
+        <label for={index}>{choice.text}</label>
+      </li>
+    )
+  })
   return(
-    <div className="choices">
-      <ul>
-        <li>
-          <input type="radio" id="choice1"
-          name="choice" value="Option1" />
-          <label for="choice1">Option1</label>
-        </li>
-        <li>
-          <input type="radio" id="choice1"
-          name="choice" value="Option1" />
-          <label for="choice1">Option1</label>
-        </li>
-        <li>
-          <input type="radio" id="choice1"
-          name="choice" value="Option1" />
-          <label for="choice1">Option1</label>
-        </li>
-        <li>
-          <input type="radio" id="choice1"
-          name="choice" value="Option1" />
-          <label for="choice1">Option1</label>
-        </li>
-      </ul>
-    </div>
+    <ui>
+      {optionList}
+    </ui>
   )
 }
-
-const Question = () => {
-  return(
-    <div className="question">
-      <QuestionText />
-      <Choices />
-    </div>
-  )
+class Question extends Component {
+  render() {
+    const { question, choices } = this.props
+    return(
+      <div className="question">
+        <QuestionText text={question}/>
+        <Choices choices={choices}/>
+      </div>
+    )
+  }
 }
 
 export default Question
+
+
+ 

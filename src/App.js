@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <div className="container">
         <Header name="Multiple-Choice Test" />
-        <Detail />
+        <Detail questions={questions}/>
       </div>
     );
   }
@@ -41,15 +41,15 @@ const questions = [
     text: 'What is your wife name',
     choices: [
       {
-        text: 'Anoop',
+        text: 'ABC',
         answer: false
       },
       {
-        text: 'Mundathan',
+        text: 'BCD',
         answer: false
       },
       {
-        text: 'Anvita',
+        text: 'WWF',
         answer: false
       },
       {
@@ -59,24 +59,24 @@ const questions = [
     ]
   },
   {
-    text: 'Where are you living?.',
+    text: 'Where are you living',
     choices: [
       {
-        text: 'Anoop',
+        text: 'London',
         answer: false
       },
       {
-        text: 'Mundathan',
+        text: 'Paris',
         answer: false
       },
       {
-        text: 'Anvita',
+        text: 'Newyork',
         answer: false
       },
       {
-        text: 'Neethu',
+        text: 'Sydney',
         answer: true
-      }
+      },
     ]
   }
 ]
