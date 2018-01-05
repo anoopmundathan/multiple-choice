@@ -1,9 +1,9 @@
-import { getQuestions } from '../utils/api'
+import fetchQuestions  from '../utils/api'
 
 export const GET_QUESTIONS = 'GET_QUESTIONS'
 
-export const fetchPosts = () => dispatch => (
-  getQuestions()
+export const getQuestions = () => dispatch => (
+  fetchQuestions()
     .then(questions => {
       dispatch({
         type: GET_QUESTIONS,

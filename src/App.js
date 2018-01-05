@@ -1,37 +1,48 @@
 import React, { Component } from 'react'
-import './App.css'
-
-import { getQuestions} from './utils/api'
+import { connect } from 'react-redux'
+import { getQuestions } from './actions'
 
 import Header from './components/Header'
 import Detail from './components/Detail'
 
+import './App.css'
 class App extends Component {
   state = {
-    questions: [],
-    loading: false
+    loaded: false
   }
   componentDidMount() {
-    getQuestions()
-      .then(questions => {
+    this.props.loadQuestions()
+      .then(() => {
         this.setState({
-          questions: questions,
-          loading: true
+          loaded: true
         })
       })
   }
 
   render() {
-    const { loading, questions } = this.state
-    return (
-      <div className="container">
-        <Header name="Multiple-Choice Test" />
-        {loading 
-        ? (<Detail questions={questions} />)
-        : (<div>Loading questions...</div>)}
-      </div>
-    );
+    const { questions } = this.props
+    const { loaded } = this.state
+    return(
+        <div className="container">
+          <Header name="Multiple-Choice Test" />
+          {loaded 
+          ? (<Detail questions={questions} />)
+          : (<div>Loading questions...</div>)}
+        </div>
+      )
   }
 }
 
-export default App
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadQuestions: () => dispatch(getQuestions())
+  }
+}
+
+const mapStateToProps = ({ questions }) => {
+  return {
+    questions
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
