@@ -69,6 +69,12 @@ label {
   border-radius: 3px;
 }
 
+.answer p {
+  margin: 0;
+  padding: 0;
+  color: rgb(5, 131, 5);
+}
+
 @media screen and (min-width: 600px) {
   .container {
     width: 70%;

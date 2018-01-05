@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux'
 
-import { GET_QUESTIONS, GET_QUESTION } from '../actions'
+import { 
+  GET_QUESTIONS, 
+  GET_QUESTION,
+  GET_ANSWER } from '../actions'
 
 const questions = (state = [], action) => {
   const { questions } = action
@@ -24,8 +27,20 @@ const question = (state = {}, action ) => {
   }
 }
 
+const answer = (state = {}, action ) => {
+  switch(action.type) {
+    case GET_ANSWER:
+      return {
+        ...state,
+        answer: action.answer
+      }
+    default:
+      return state
+  }
+}
 export default combineReducers({
   questions,
-  question
+  question,
+  answer
 })
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getQuestions, getQuestion } from '../actions'
+import { getQuestions, getQuestion, getAnswer } from '../actions'
 
 import Question from './Question'
 import NextButton from './NextButton'
@@ -10,25 +10,28 @@ class Detail extends Component {
   state = {
     index: 0,
     loaded: false,
-    complete: false
+    complete: false,
+    clicked: false
   }
   
   componentDidMount() {
+    // 1. Load all questions
     this.props.loadQuestions()
       .then(() => {
-        const { index } = this.state
-        this.props.loadQuestion(this.props.questions[index])
+        this.loadQuestionAndAnswer(this.state.index)
         this.setState({ loaded: true })
       })
   }
 
   onNextClick = () => {
-    // Increment to next question
     const { questions } = this.props
     let index = this.state.index + 1
     if (index < questions.length) {
-      this.props.loadQuestion(questions[index])
-      this.setState({ index: index })
+      this.loadQuestionAndAnswer(index)
+      this.setState({ 
+        index: index,
+        clicked: false
+      })
     } else {
       this.setState({ complete: true })
     }
@@ -38,9 +41,24 @@ class Detail extends Component {
     const { questions } = this.props
     this.setState({
       index: 0,
-      complete: false
+      complete: false,
+      clicked: false
     })
-    this.props.loadQuestion(questions[this.state.index])
+    this.loadQuestionAndAnswer(0)
+  }
+
+  loadQuestionAndAnswer = (index) => {
+    const { questions } = this.props
+    const choices = questions[index].choices
+    const answer = choices.filter(choice => choice.answer)
+    this.props.loadQuestion(questions[index])
+    this.props.loadAnswer(answer)
+  }
+
+  onAnswerClick = () => {
+    this.setState({
+      clicked: true
+    })
   }
 
   render() {
@@ -57,7 +75,10 @@ class Detail extends Component {
         
         {loaded && !complete ?(
           <div>
-            <Question />
+            <Question onAnswerClick={this.onAnswerClick}/>
+            {this.state.clicked && (
+              <p>Answer: {this.props.answer[0].text}</p>
+            )}
             <NextButton onNextClick={this.onNextClick.bind(this)} />
           </div>
         ): null}
@@ -77,13 +98,15 @@ class Detail extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadQuestions: () => dispatch(getQuestions()),
-    loadQuestion: (question) => dispatch(getQuestion(question))
+    loadQuestion: (question) => dispatch(getQuestion(question)),
+    loadAnswer: (answer) => dispatch(getAnswer(answer))
   }
 }
 
-const mapStateToProps = ({ questions }) => {
+const mapStateToProps = ({ questions, answer }) => {
   return { 
-    questions
+    questions,
+    answer: answer.answer
   }
 }
 
