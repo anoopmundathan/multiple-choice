@@ -2,7 +2,7 @@ import React from 'react'
 
 const NextButton = (props) => {
   return(
-    <div className="next-button-container">
+    <div className="button-container">
       <input 
         className="next-button" 
         type="button" 

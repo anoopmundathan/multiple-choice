@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import Question from './Question'
 import NextButton from './NextButton'
+import StartButton from './StartButton'
 
 class Detail extends Component {
   state = {
@@ -19,7 +20,6 @@ class Detail extends Component {
       question: questions[index].text,
       choices: questions[index].choices
     })
-
   }
 
   onNextClick = () => {
@@ -39,17 +39,39 @@ class Detail extends Component {
     }
   }
 
+  onStartClick = () => {
+    const { questions } = this.props
+    let index = 0
+
+    this.setState({
+      question: questions[index].text,
+      choices: questions[index].choices,
+      index: 0,
+      complete: false
+    })
+  }
+
   render() {
     const { question, choices, index, complete } = this.state
     const { questions } = this.props
     return(
       <div className="detail">
         <p>{index + 1} / {questions.length}</p>
-        {complete && <p>Completed</p> }
-        {!complete && (
-          <Question question={question} choices={choices}/>
+
+        {complete && (
+          <div>
+            <h2>Quiz completed</h2>
+            <StartButton onStartClick={this.onStartClick.bind(this)}/>
+          </div>
         )}
-        <NextButton onNextClick={this.onNextClick.bind(this)}/>
+
+        {!complete && (
+          <div>
+            <Question question={question} choices={choices}/>
+            <NextButton onNextClick={this.onNextClick.bind(this)}/>
+          </div>
+        )}
+
       </div>
     )
   }

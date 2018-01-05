@@ -13,9 +13,9 @@ const Choices = (props) => {
     )
   })
   return(
-    <ui>
+    <ul>
       {optionList}
-    </ui>
+    </ul>
   )
 }
 class Question extends Component {

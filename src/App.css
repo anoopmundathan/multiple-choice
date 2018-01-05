@@ -48,12 +48,13 @@ label {
   margin-top: 50px;
 }
 
-.next-button-container {
+.button-container {
   width: 100%;
   text-align: center;
 }
 
-.next-button {
+.next-button,
+.start-button {
   width: 100%;
   background: linear-gradient(10deg, #EE6640 0%, #FA4D6D 100%);
   border: none;
