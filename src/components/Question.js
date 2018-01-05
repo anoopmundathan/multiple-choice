@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 const QuestionText = (props) => <h2>{props.text}</h2>
 
@@ -12,6 +13,7 @@ const Choices = (props) => {
       </li>
     )
   })
+
   return(
     <ul>
       {optionList}
@@ -20,17 +22,23 @@ const Choices = (props) => {
 }
 class Question extends Component {
   render() {
-    const { question, choices } = this.props
+    const { text, choices } = this.props.question
+    console.log(this.props)
     return(
       <div className="question">
-        <QuestionText text={question}/>
+        <QuestionText text={text}/>
         <Choices choices={choices}/>
       </div>
     )
   }
 }
 
-export default Question
+const mapStateToProps = ({ question }) => {
+  return {
+    question: question.question
+  }
+}
 
+export default connect(mapStateToProps)(Question)
 
  

@@ -1,14 +1,31 @@
-import { GET_QUESTIONS } from '../actions'
+import { combineReducers } from 'redux'
 
-const questions = (state = { questions: [] }, action) => {
+import { GET_QUESTIONS, GET_QUESTION } from '../actions'
+
+const questions = (state = [], action) => {
+  const { questions } = action
   switch(action.type) {
     case GET_QUESTIONS:
+      return questions
+    default:
+      return state
+  }
+}
+
+const question = (state = {}, action ) => {
+  switch(action.type) {
+    case GET_QUESTION:
       return {
-        questions: [...action.questions]
+        ...state,
+        question: action.question
       }
     default:
       return state
   }
 }
 
-export default questions
+export default combineReducers({
+  questions,
+  question
+})
+
