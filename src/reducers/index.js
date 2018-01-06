@@ -2,8 +2,8 @@ import { combineReducers } from 'redux'
 
 import { 
   GET_QUESTIONS, 
-  GET_QUESTION,
-  GET_ANSWER } from '../actions'
+  SELECT_ANSWER,
+  UPDATE_ANSWER } from '../actions'
 
 const questions = (state = [], action) => {
   const { questions } = action
@@ -15,32 +15,40 @@ const questions = (state = [], action) => {
   }
 }
 
-const question = (state = {}, action ) => {
+const selections = (state = { answers: [] }, action ) => {
   switch(action.type) {
-    case GET_QUESTION:
+    case SELECT_ANSWER:
+      const { question, choice } = action.selection
+      const addAnswer = [...state.answers, {
+        question: question,
+        choice: choice
+      }]
       return {
-        ...state,
-        question: action.question
+        ...state, 
+        answers: addAnswer
       }
-    default:
-      return state
-  }
-}
+    case UPDATE_ANSWER: 
+      const updateAnswer = state.answers.map((answer, index) => {
+        if(answer.question === action.selection.question) {
+          return {
+            ...answer, 
+            choice: action.selection.choice
+          }
+        }
+        return answer
+      })
 
-const answer = (state = {}, action ) => {
-  switch(action.type) {
-    case GET_ANSWER:
       return {
-        ...state,
-        answer: action.answer
+        ...state, 
+        answers: updateAnswer
       }
+
     default:
       return state
   }
 }
 export default combineReducers({
   questions,
-  question,
-  answer
+  selections
 })
 

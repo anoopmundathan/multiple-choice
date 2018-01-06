@@ -1,134 +1,93 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getQuestions, getQuestion, getAnswer } from '../actions'
+import { 
+  getQuestions, 
+  selectAnswer, 
+  updateAnswer } from '../actions'
 
-import Question from './Question'
-import NextButton from './NextButton'
-import StartButton from './StartButton'
-import Progress from './Progress'
-import Answer from './Answer';
+import SubmitButton  from './SubmitButton'
 
 class Detail extends Component {
   state = {
-    index: 0,
     loaded: false,
-    completed: false,
-    clicked: false,
-    correct: "",
-    clickedOption: ""
+    selections: []
   }
   
   componentDidMount() {
-    // 1. Load all questions
     this.props.loadQuestions()
       .then(() => {
-        this.loadQuestionAndAnswer(this.state.index)
         this.setState({ loaded: true })
       })
   }
 
-  onNextClick = () => {
-    const { questions } = this.props
-    let index = this.state.index + 1
-    if (index < questions.length) {
-      this.loadQuestionAndAnswer(index)
-      this.setState({ 
-        index: index,
-        clicked: false,
-        correct: "",
-        clickedOption: ""
-      })
+  onSubmitClick = () => {
+    
+  }
+
+  onHandleOptionChange = (question, choice) => {
+    const { answers } = this.props.selections
+    
+    // Check if any selection is made for particular question
+    const check = answers.filter(answer => answer.question === question)
+
+    // if no selection is made add else update
+    if(check.length === 0 ) {
+      this.props.addAnswer({question, choice})
     } else {
-      this.setState({ completed: true })
-    }
-  }
-
-  onStartClick = () => {
-    const { questions } = this.props
-    this.setState({
-      index: 0,
-      completed: false,
-      clicked: false,
-      correct: "",
-      clickedOption: ""
-    })
-    this.loadQuestionAndAnswer(0)
-  }
-
-  loadQuestionAndAnswer = (index) => {
-    const { questions } = this.props
-    const choices = questions[index].choices
-    const answer = choices.filter(choice => choice.answer)
-    this.props.loadQuestion(questions[index])
-    this.props.loadAnswer(answer)
-  }
-
-  onAnswerClick = (choice) => {
-
-    if(this.state.correct === "" && !this.state.clicked) {
-      if(choice === this.props.answer[0].text) {
-        // correct answer
-        this.setState({ 
-          correct: true,
-          clickedOption: choice
-        })
-      } else {
-        // wrong answer
-        this.setState({ 
-          correct: false,
-          clickedOption: choice
-        })
-      } 
+      this.props.updateAnswer({question, choice})
     }
 
-    this.setState({
-      clicked: true
-    })
   }
 
   render() {
-    const { index, completed, loaded, clicked, correct, clickedOption } = this.state
-    const { questions, answer } = this.props
+    const { loaded } = this.state
     
-    const length = questions.length
-    const current = index + 1
+    const questionList = this.props.questions.map((question, index) => (
+      <div key={index}>
+        <h3>{question.text}</h3>
+        {question.choices.map((choice, index) => (
+          <List 
+            key={index}
+            question={question.text}
+            choice={choice.text}
+            onHandleOptionChange={this.onHandleOptionChange} />
+        ))}
+      </div>
+    ))
 
     return(
       <div className="detail">
-
-        <Progress index={current} length={length} />
       
         {!loaded && (
           <div>Loading questions...</div>
         )}
-        
-        {loaded && !completed ?(
-          <div>
-            <Question
-              correct={correct} 
-              clicked={clicked}
-              clickedOption={clickedOption}
-              onAnswerClick={this.onAnswerClick}/>
 
-            {this.state.clicked && (
-              <Answer answer={answer[0].text}/>
-            )}
-
-            <NextButton
-              clicked={clicked}
-              onNextClick={this.onNextClick.bind(this)} />
-          </div>
-        ): null}
-
-        {completed && (
-          <div className="start">
-            <h2>Test completed. Start again?.</h2>
-            <StartButton 
-              onStartClick={this.onStartClick.bind(this)}/>
-          </div>
-        )}
-
+        {questionList}
+        <SubmitButton 
+          onSubmitClick={this.onSubmitClick} />
+      
       </div>
+    )
+  }
+}
+
+class List extends Component {
+  onChange = () => {
+    const { question, choice} = this.props
+    this.props.onHandleOptionChange(question, choice)
+  }
+
+  render() {
+    const { question, choice } = this.props
+    return(
+      <li>
+        <input type="radio" 
+          onChange={this.onChange}
+          name={question}
+          id={choice} 
+          value={choice} />
+        <label htmlFor={choice}>{choice}</label>
+    </li>
     )
   }
 }
@@ -136,15 +95,15 @@ class Detail extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadQuestions: () => dispatch(getQuestions()),
-    loadQuestion: (question) => dispatch(getQuestion(question)),
-    loadAnswer: (answer) => dispatch(getAnswer(answer))
+    addAnswer: (answer) => dispatch(selectAnswer(answer)),   
+    updateAnswer: (answer) => dispatch(updateAnswer(answer))   
   }
 }
 
-const mapStateToProps = ({ questions, answer }) => {
+const mapStateToProps = ({ questions, selections }) => {
   return { 
-    questions,
-    answer: answer.answer
+    questions, 
+    selections
   }
 }
 
