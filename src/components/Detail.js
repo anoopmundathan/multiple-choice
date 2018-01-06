@@ -5,6 +5,7 @@ import { getQuestions, getQuestion, getAnswer } from '../actions'
 import Question from './Question'
 import NextButton from './NextButton'
 import StartButton from './StartButton'
+import Progress from './Progress'
 
 class Detail extends Component {
   state = {
@@ -64,11 +65,15 @@ class Detail extends Component {
   render() {
     const { index, completed, loaded, clicked } = this.state
     const { questions, answer } = this.props
-  
+    
+    const length = questions.length
+    const current = index + 1
+
     return(
       <div className="detail">
-        <p>{index + 1} / {questions.length}</p>
 
+        <Progress index={current} length={length} />
+      
         {!loaded && (
           <div>Loading questions...</div>
         )}

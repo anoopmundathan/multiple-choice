@@ -6,7 +6,6 @@ class Choices extends Component {
   }
 
   onHandleOptionChange = (evt) => {
-    console.log('onHandleChange')
     this.props.onAnswerClick();
     this.setState({
       selectedOption: evt.target.value,
