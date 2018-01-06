@@ -13,7 +13,8 @@ class Detail extends Component {
     index: 0,
     loaded: false,
     completed: false,
-    clicked: false
+    clicked: false,
+    correct: ""
   }
   
   componentDidMount() {
@@ -32,7 +33,8 @@ class Detail extends Component {
       this.loadQuestionAndAnswer(index)
       this.setState({ 
         index: index,
-        clicked: false
+        clicked: false,
+        correct: ""
       })
     } else {
       this.setState({ completed: true })
@@ -44,7 +46,8 @@ class Detail extends Component {
     this.setState({
       index: 0,
       completed: false,
-      clicked: false
+      clicked: false,
+      correct: ""
     })
     this.loadQuestionAndAnswer(0)
   }
@@ -57,14 +60,21 @@ class Detail extends Component {
     this.props.loadAnswer(answer)
   }
 
-  onAnswerClick = () => {
+  onAnswerClick = (choice) => {
+
+    if(this.state.correct === "" && 
+      !this.state.clicked &&
+      choice === this.props.answer[0].text) {
+        this.setState({ correct: true})
+    } 
+
     this.setState({
       clicked: true
     })
   }
 
   render() {
-    const { index, completed, loaded, clicked } = this.state
+    const { index, completed, loaded, clicked, correct } = this.state
     const { questions, answer } = this.props
     
     const length = questions.length
@@ -81,7 +91,8 @@ class Detail extends Component {
         
         {loaded && !completed ?(
           <div>
-            <Question 
+            <Question
+              correct={correct} 
               onAnswerClick={this.onAnswerClick}/>
 
             {this.state.clicked && (

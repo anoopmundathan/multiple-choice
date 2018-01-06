@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 class Choices extends Component {
   state = {
@@ -6,14 +7,15 @@ class Choices extends Component {
   }
 
   onHandleOptionChange = (evt) => {
-    this.props.onAnswerClick();
+    this.props.onAnswerClick(evt.target.value)
     this.setState({
       selectedOption: evt.target.value,
     })
   }
 
   render() {
-    const { choices } = this.props
+
+    const { choices, correct, answer } = this.props
     const optionList = choices.map((choice, index) => {
       return(
         <li key={index}>
@@ -23,7 +25,9 @@ class Choices extends Component {
             id={index} 
             checked={this.state.selectedOption === choice.text}
             name="choice" value={choice.text} />
-          <label for={index}>{choice.text}</label>
+          {answer[0].text === choice.text && correct 
+            ? (<label className="correct" for={index}>{choice.text}</label>) 
+            : (<label for={index}>{choice.text}</label>) }
         </li>
       )
     })
@@ -38,4 +42,10 @@ class Choices extends Component {
   }
 }
 
-export default Choices
+const mapStateToProps = ({ answer}) => {
+  return {
+    answer: answer.answer
+  }
+}
+
+export default connect(mapStateToProps)(Choices)

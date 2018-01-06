@@ -6,11 +6,14 @@ const QuestionText = (props) => <h2>{props.text}</h2>
 
 class Question extends Component {
   render() {
-    const { text, choices } = this.props.question
+    const { text, choices, correct } = this.props.question
     return(
       <div className="question">
         <QuestionText text={text}/>
-        <Choices onAnswerClick={this.props.onAnswerClick} choices={choices}/>
+        <Choices 
+          correct={this.props.correct}
+          onAnswerClick={this.props.onAnswerClick} 
+          choices={choices}/>
       </div>
     )
   }

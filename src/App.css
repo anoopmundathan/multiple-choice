@@ -48,6 +48,10 @@ label {
   margin: 0;
 }
 
+.correct {
+  color: rgb(17, 190, 17);
+}
+
 .start {
   text-align: center;
 }
