@@ -68,7 +68,10 @@ class Detail extends Component {
     if(this.state.correct === "" && !this.state.clicked) {
       if(choice === this.props.answer[0].text) {
         // correct answer
-        this.setState({ correct: true})
+        this.setState({ 
+          correct: true,
+          clickedOption: choice
+        })
       } else {
         // wrong answer
         this.setState({ 

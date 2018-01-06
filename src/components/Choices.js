@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
 class Choices extends Component {
   state = {
@@ -15,7 +14,7 @@ class Choices extends Component {
 
   render() {
 
-    const { choices, correct, answer, clicked, clickedOption } = this.props
+    const { choices, correct, clicked, clickedOption } = this.props
     const optionList = choices.map((choice, index) => {
       return(
         <li key={index}>
@@ -25,14 +24,27 @@ class Choices extends Component {
             id={index} 
             checked={this.state.selectedOption === choice.text}
             name="choice" value={choice.text} />
-          {answer[0].text === choice.text && correct 
-            ? (<label className="correct" for={index}>{choice.text}</label>) 
-            : (null) }
-          {choice.text === clickedOption
-            ? (<label className="wrong" for={index}>{choice.text}</label>) 
-            : (null) }
 
-          <label for={index}>{choice.text}</label>
+          {clicked && clickedOption === choice.text && correct
+            ? (<label className="correct" htmlFor={index}>{choice.text}</label>) 
+            : (null) 
+          }
+
+          {clicked && clickedOption === choice.text && !correct
+            ? (<label className="wrong" htmlFor={index}>{choice.text}</label>) 
+            : (null) 
+          }
+          
+          {!clicked && clickedOption === ""
+            ? (<label htmlFor={index}>{choice.text}</label>) 
+            : (null) 
+          }
+
+          {clicked && clickedOption !== choice.text
+            ? (<label htmlFor={index}>{choice.text}</label>) 
+            : (null) 
+          }
+          
         </li>
       )
     })
@@ -47,10 +59,6 @@ class Choices extends Component {
   }
 }
 
-const mapStateToProps = ({ answer}) => {
-  return {
-    answer: answer.answer
-  }
-}
+export default Choices
 
-export default connect(mapStateToProps)(Choices)
+
