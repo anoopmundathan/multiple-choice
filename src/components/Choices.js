@@ -15,7 +15,7 @@ class Choices extends Component {
 
   render() {
 
-    const { choices, correct, answer } = this.props
+    const { choices, correct, answer, clicked, clickedOption } = this.props
     const optionList = choices.map((choice, index) => {
       return(
         <li key={index}>
@@ -27,7 +27,12 @@ class Choices extends Component {
             name="choice" value={choice.text} />
           {answer[0].text === choice.text && correct 
             ? (<label className="correct" for={index}>{choice.text}</label>) 
-            : (<label for={index}>{choice.text}</label>) }
+            : (null) }
+          {choice.text === clickedOption
+            ? (<label className="wrong" for={index}>{choice.text}</label>) 
+            : (null) }
+
+          <label for={index}>{choice.text}</label>
         </li>
       )
     })

@@ -12,6 +12,8 @@ class Question extends Component {
         <QuestionText text={text}/>
         <Choices 
           correct={this.props.correct}
+          clicked={this.props.clicked}
+          clickedOption={this.props.clickedOption}
           onAnswerClick={this.props.onAnswerClick} 
           choices={choices}/>
       </div>

@@ -52,6 +52,10 @@ label {
   color: rgb(17, 190, 17);
 }
 
+.wrong {
+  color: rgb(218, 57, 57);
+}
+
 .start {
   text-align: center;
 }
