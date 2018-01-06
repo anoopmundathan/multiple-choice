@@ -1,8 +1,12 @@
-import fetchQuestions  from '../utils/api'
+import {
+  fetchQuestions,
+  postAnswers
+}  from '../utils/api'
 
 export const GET_QUESTIONS = 'GET_QUESTIONS'
 export const SELECT_ANSWER = 'SELECT_ANSWER'
 export const UPDATE_ANSWER = 'UPDATE_ANSWER'
+export const GET_ANSWERS   = 'GET_ANSWERS'
 
 export const getQuestions = () => dispatch => (
   fetchQuestions()
@@ -10,6 +14,16 @@ export const getQuestions = () => dispatch => (
       dispatch({
         type: GET_QUESTIONS,
         questions
+      })
+    })
+)
+
+export const postSelections = (selections) => dispatch => (
+  postAnswers(selections)
+    .then(answers => {
+      dispatch({
+        type: GET_ANSWERS,
+        answers
       })
     })
 )

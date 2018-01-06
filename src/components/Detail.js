@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { 
   getQuestions, 
+  postSelections,
   selectAnswer, 
   updateAnswer } from '../actions'
 
@@ -10,7 +11,7 @@ import SubmitButton  from './SubmitButton'
 class Detail extends Component {
   state = {
     loaded: false,
-    selections: []
+    submited: false
   }
   
   componentDidMount() {
@@ -21,7 +22,10 @@ class Detail extends Component {
   }
 
   onSubmitClick = () => {
-    
+    this.props.submitAnswer(this.props.selections.answers)
+    .then(() => {
+      this.setState({ submited: true })
+    })
   }
 
   onHandleOptionChange = (question, choice) => {
@@ -40,20 +44,35 @@ class Detail extends Component {
   }
 
   render() {
-    const { loaded } = this.state
-    
-    const questionList = this.props.questions.map((question, index) => (
-      <div key={index}>
-        <h3>{question.text}</h3>
-        {question.choices.map((choice, index) => (
-          <List 
-            key={index}
-            question={question.text}
-            choice={choice.text}
-            onHandleOptionChange={this.onHandleOptionChange} />
-        ))}
-      </div>
-    ))
+    const { loaded, submited } = this.state
+    let questionList
+    let answerList
+    if(!submited) {
+      questionList = this.props.questions.map((question, index) => (
+        <div key={index}>
+          <h3>{question.text}</h3>
+          {question.choices.map((choice, index) => (
+            <List 
+              key={index}
+              question={question.text}
+              choice={choice.text}
+              onHandleOptionChange={this.onHandleOptionChange} />
+          ))}
+        </div>
+      ))
+    } else {
+      answerList = this.props.answers.map((answer, index) => (
+        <div>
+          <h3>{answer.text}</h3>
+          {answer.choices.map((choice, index) => (
+            <li key={index}>
+              {choice.text}
+              {choice.answer}
+            </li>
+          ))}
+        </div>
+      ))
+    }
 
     return(
       <div className="detail">
@@ -63,6 +82,7 @@ class Detail extends Component {
         )}
 
         {questionList}
+        {answerList}
         <SubmitButton 
           onSubmitClick={this.onSubmitClick} />
       
@@ -96,14 +116,16 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadQuestions: () => dispatch(getQuestions()),
     addAnswer: (answer) => dispatch(selectAnswer(answer)),   
-    updateAnswer: (answer) => dispatch(updateAnswer(answer))   
+    updateAnswer: (answer) => dispatch(updateAnswer(answer)),
+    submitAnswer: (answers) => dispatch(postSelections(answers))   
   }
 }
 
-const mapStateToProps = ({ questions, selections }) => {
+const mapStateToProps = ({ questions, selections, answers }) => {
   return { 
     questions, 
-    selections
+    selections,
+    answers
   }
 }
 
