@@ -10,7 +10,7 @@ class Detail extends Component {
   state = {
     index: 0,
     loaded: false,
-    complete: false,
+    completed: false,
     clicked: false
   }
   
@@ -33,7 +33,7 @@ class Detail extends Component {
         clicked: false
       })
     } else {
-      this.setState({ complete: true })
+      this.setState({ completed: true })
     }
   }
 
@@ -41,7 +41,7 @@ class Detail extends Component {
     const { questions } = this.props
     this.setState({
       index: 0,
-      complete: false,
+      completed: false,
       clicked: false
     })
     this.loadQuestionAndAnswer(0)
@@ -62,8 +62,8 @@ class Detail extends Component {
   }
 
   render() {
-    const { index, complete, loaded } = this.state
-    const { questions } = this.props
+    const { index, completed, loaded, clicked } = this.state
+    const { questions, answer } = this.props
   
     return(
       <div className="detail">
@@ -73,20 +73,24 @@ class Detail extends Component {
           <div>Loading questions...</div>
         )}
         
-        {loaded && !complete ?(
+        {loaded && !completed ?(
           <div>
-            <Question onAnswerClick={this.onAnswerClick}/>
+            <Question 
+              onAnswerClick={this.onAnswerClick}/>
             {this.state.clicked && (
-              <p>Answer: {this.props.answer[0].text}</p>
+              <p>Answer: {answer[0].text}</p>
             )}
-            <NextButton onNextClick={this.onNextClick.bind(this)} />
+            <NextButton
+              clicked={clicked}
+              onNextClick={this.onNextClick.bind(this)} />
           </div>
         ): null}
 
-        {complete && (
+        {completed && (
           <div>
             <h2>Quiz completed</h2>
-            <StartButton onStartClick={this.onStartClick.bind(this)}/>
+            <StartButton 
+              onStartClick={this.onStartClick.bind(this)}/>
           </div>
         )}
 

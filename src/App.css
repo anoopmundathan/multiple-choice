@@ -32,6 +32,7 @@ li {
 
 label {
   margin-left: 20px;
+  font-size: 1.2em;
 }
 
 .container {
@@ -67,6 +68,17 @@ label {
   margin: 2em 2px;
   cursor: pointer;
   border-radius: 3px;
+}
+
+.next-button-inactive {
+  background: linear-gradient(10deg, #EE6640 0%, #FA4D6D 100%);
+  color: rgb(168, 161, 161);
+  cursor: none;
+}
+
+.next-button-active {
+  background: linear-gradient(10deg, #EE6640 0%, #FA4D6D 100%);
+  color: white;
 }
 
 .answer p {
