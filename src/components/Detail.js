@@ -6,6 +6,7 @@ import Question from './Question'
 import NextButton from './NextButton'
 import StartButton from './StartButton'
 import Progress from './Progress'
+import Answer from './Answer';
 
 class Detail extends Component {
   state = {
@@ -82,9 +83,11 @@ class Detail extends Component {
           <div>
             <Question 
               onAnswerClick={this.onAnswerClick}/>
+
             {this.state.clicked && (
-              <p>Answer: {answer[0].text}</p>
+              <Answer answer={answer[0].text}/>
             )}
+
             <NextButton
               clicked={clicked}
               onNextClick={this.onNextClick.bind(this)} />
@@ -92,8 +95,8 @@ class Detail extends Component {
         ): null}
 
         {completed && (
-          <div>
-            <h2>Quiz completed</h2>
+          <div className="start">
+            <h2>Test completed. Start again?.</h2>
             <StartButton 
               onStartClick={this.onStartClick.bind(this)}/>
           </div>

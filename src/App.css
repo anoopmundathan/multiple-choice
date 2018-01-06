@@ -35,6 +35,23 @@ label {
   font-size: 1.2em;
 }
 
+.answer-container {
+  padding-top: 10px;
+}
+
+.answer-title {
+  margin: 0;
+  font-weight: bold;
+}
+
+.answer {
+  margin: 0;
+}
+
+.start {
+  text-align: center;
+}
+
 .container {
   width: 90%;
   padding: 1%;
@@ -79,12 +96,6 @@ label {
 .next-button-active {
   background: linear-gradient(10deg, #EE6640 0%, #FA4D6D 100%);
   color: white;
-}
-
-.answer p {
-  margin: 0;
-  padding: 0;
-  color: rgb(5, 131, 5);
 }
 
 @media screen and (min-width: 600px) {
