@@ -26,38 +26,13 @@ ul {
 
 li {
   color: rgb(54, 53, 53);
-  padding: 20px;
-  border-bottom: 1px solid;
+  padding: 10px;
+  border-bottom: 1px solid rgb(189, 188, 188);
 }
 
 label {
   margin-left: 20px;
-  font-size: 1.2em;
-}
-
-.answer-container {
-  padding-top: 10px;
-}
-
-.answer-title {
-  margin: 0;
-  font-weight: bold;
-}
-
-.answer {
-  margin: 0;
-}
-
-.correct {
-  background: rgb(17, 190, 17);
-}
-
-.wrong {
-  background: red;
-}
-
-.start {
-  text-align: center;
+  font-size: 1.1em;
 }
 
 .container {
@@ -68,10 +43,30 @@ label {
 
 .header {
   width: 100%;
+  text-align: center;
 }
 
-.progress {
-  text-align: right;
+.final-score {
+  margin: 20px auto;
+  text-align: center;
+  width: 150px;
+  background: rgb(235, 205, 185);
+  border: 1px solid red;
+}
+
+/* .final-score h2 {
+  margin: 0;
+  padding: 0;
+} */
+
+.correct {
+  background: rgb(17, 190, 17);
+  color: #fff;
+}
+
+.wrong {
+  background: rgb(243, 2, 2);
+  color: #fff;
 }
 
 .button-container {
@@ -79,10 +74,9 @@ label {
   text-align: center;
 }
 
-.submit-button,
-.start-button {
+.submit-button {
   width: 100%;
-  background: linear-gradient(10deg, #EE6640 0%, #FA4D6D 100%);
+  background: linear-gradient(10deg, rgb(64, 168, 238) 0%, rgb(77, 132, 250) 100%);
   border: none;
   color: white;
   padding: 15px 32px;
@@ -99,14 +93,10 @@ label {
   .container {
     width: 70%;
   }
-  .header {
-    text-align: center;
-  }
 }
 
 @media screen and (min-width: 900px) {
   .container {
     width: 60%;
   }
-
 }

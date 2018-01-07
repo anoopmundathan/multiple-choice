@@ -7,6 +7,8 @@ import {
   updateAnswer } from '../actions'
 
 import SubmitButton  from './SubmitButton'
+import QuestionList from './QuestionList'
+import Score from './Score'
 
 class Detail extends Component {
   state = {
@@ -49,59 +51,73 @@ class Detail extends Component {
   }
 
   render() {
+    
     let score = 0;
+    
     const { loaded, submited } = this.state
     const { questions, answers, selections } = this.props
+    
     let questionList = null
-    let answerList = null
+    let answerStatusList = null
+
     if(!submited) {
       questionList = questions.map((question, index) => (
-        <div key={index}>
-          <h3>{index + 1} . {question.text}</h3>
-          {question.choices.map((choice, index) => (
-            <List 
-              key={index}
-              question={question.text}
-              choice={choice.text}
-              onHandleOptionChange={this.onHandleOptionChange} />
-          ))}
-        </div>
+        <QuestionList 
+          key={index}
+          index={index}
+          question={question}
+          onHandleOptionChange={this.onHandleOptionChange} />
       ))
     } else {
-      answerList = questions.map((question, qIndex) => (
+      answerStatusList = questions.map((question, qIndex) => (
         <div key={qIndex}>
-          <h3>{question.text}</h3>
+          <h3>{qIndex + 1} . {question.text}</h3>
+          {console.log(question.choices)}
           {question.choices.map((choice, index) => {
-
             // make sure correct question
             if(answers[qIndex].question === question.text &&
               selections.answers[qIndex].question === question.text) {
 
-                // if correct
+                // correct
                 if(choice.text === selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer === answers[qIndex].answer) {
+                    
+                    // increase the score
                     score = score + 1
-                    return(<li className="correct">
-                      <label>{choice.text}</label></li>)
+
+                    return(
+                      <li key={index} className="correct">
+                        <label>{choice.text}</label>
+                      </li>
+                    )
                 }
 
                 if(choice.text !== selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer === answers[qIndex].answer) {
-                    return(<li><label>{choice.text}</label></li>)
+                    return(
+                      <li key={index}>
+                        <label>{choice.text}</label>
+                      </li>
+                    )
                 }
                 
-                // if wrong
+                // wrong
                 if(choice.text === selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer !== answers[qIndex].answer) {
-                    return(<li className="wrong">
-                      <label>{choice.text}</label>
-                    </li>)
+                    return(
+                      <li key={index} className="wrong">
+                        <label>{choice.text}</label>
+                      </li>
+                    )
                 }
 
-                //
                 if(choice.text !== selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer !== answers[qIndex].answer) {
-                    return(<li><label>{choice.text}</label></li>)
+                    return(
+                      <li key={index}>
+                        <label>{choice.text}</label>
+                      </li>
+                    )
                 }
             }
           })}
@@ -116,41 +132,28 @@ class Detail extends Component {
           <div>Loading questions...</div>
         )}
 
-        <ul>
-          {questionList}
-        </ul>
-
-        <ul>
-          {answerList}
-        </ul>
-        {!submited ? (
-          <SubmitButton 
-            onSubmitClick={this.onSubmitClick} />
-        ) : (
-          <h1> Final Score : {(score / questions.length) * 100}</h1>
+        {!submited && (
+          <div>
+            <ul>
+              {questionList}
+            </ul>
+            <SubmitButton 
+              onSubmitClick={this.onSubmitClick} />
+          </div>
         )}
+
+        {submited && (
+          <div>
+            <Score 
+              score={score}
+              totalQuestions={questions.length} />
+            <ul>
+              {answerStatusList}
+            </ul>
+          </div>
+        )}
+
       </div>
-    )
-  }
-}
-
-class List extends Component {
-  onChange = () => {
-    const { question, choice} = this.props
-    this.props.onHandleOptionChange(question, choice)
-  }
-
-  render() {
-    const { question, choice } = this.props
-    return(
-      <li>
-        <input type="radio" 
-          onChange={this.onChange}
-          name={question}
-          id={choice} 
-          value={choice} />
-        <label htmlFor={choice}>{choice}</label>
-    </li>
     )
   }
 }
@@ -166,7 +169,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = ({ questions, selections, answers }) => {
   return { 
-    questions, 
+    questions,
     selections,
     answers
   }
