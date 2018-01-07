@@ -22,10 +22,15 @@ class Detail extends Component {
   }
 
   onSubmitClick = () => {
-    this.props.submitAnswer(this.props.selections.answers)
-    .then(() => {
-      this.setState({ submited: true })
-    })
+
+    // Submit only if all questions are answered
+    const selectionLength = this.props.selections.answers.length
+    if(selectionLength === this.props.questions.length) {
+      this.props.submitAnswer(this.props.selections.answers)
+      .then(() => {
+        this.setState({ submited: true })
+      })
+    }
   }
 
   onHandleOptionChange = (question, choice) => {
@@ -44,13 +49,15 @@ class Detail extends Component {
   }
 
   render() {
+    let score = 0;
     const { loaded, submited } = this.state
-    let questionList
-    let answerList
+    const { questions, answers, selections } = this.props
+    let questionList = null
+    let answerList = null
     if(!submited) {
-      questionList = this.props.questions.map((question, index) => (
+      questionList = questions.map((question, index) => (
         <div key={index}>
-          <h3>{question.text}</h3>
+          <h3>{index + 1} . {question.text}</h3>
           {question.choices.map((choice, index) => (
             <List 
               key={index}
@@ -61,15 +68,43 @@ class Detail extends Component {
         </div>
       ))
     } else {
-      answerList = this.props.answers.map((answer, index) => (
-        <div>
-          <h3>{answer.text}</h3>
-          {answer.choices.map((choice, index) => (
-            <li key={index}>
-              {choice.text}
-              {choice.answer}
-            </li>
-          ))}
+      answerList = questions.map((question, qIndex) => (
+        <div key={qIndex}>
+          <h3>{question.text}</h3>
+          {question.choices.map((choice, index) => {
+
+            // make sure correct question
+            if(answers[qIndex].question === question.text &&
+              selections.answers[qIndex].question === question.text) {
+
+                // if correct
+                if(choice.text === selections.answers[qIndex].answer &&
+                  selections.answers[qIndex].answer === answers[qIndex].answer) {
+                    score = score + 1
+                    return(<li className="correct">
+                      <label>{choice.text}</label></li>)
+                }
+
+                if(choice.text !== selections.answers[qIndex].answer &&
+                  selections.answers[qIndex].answer === answers[qIndex].answer) {
+                    return(<li><label>{choice.text}</label></li>)
+                }
+                
+                // if wrong
+                if(choice.text === selections.answers[qIndex].answer &&
+                  selections.answers[qIndex].answer !== answers[qIndex].answer) {
+                    return(<li className="wrong">
+                      <label>{choice.text}</label>
+                    </li>)
+                }
+
+                //
+                if(choice.text !== selections.answers[qIndex].answer &&
+                  selections.answers[qIndex].answer !== answers[qIndex].answer) {
+                    return(<li><label>{choice.text}</label></li>)
+                }
+            }
+          })}
         </div>
       ))
     }
@@ -81,8 +116,14 @@ class Detail extends Component {
           <div>Loading questions...</div>
         )}
 
-        {questionList}
-        {answerList}
+        <ul>
+          {questionList}
+        </ul>
+
+        <ul>
+          {answerList}
+        </ul>
+        Score : {score} / {questions.length}
         <SubmitButton 
           onSubmitClick={this.onSubmitClick} />
       
