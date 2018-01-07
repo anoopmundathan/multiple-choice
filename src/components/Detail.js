@@ -9,6 +9,8 @@ import {
 import SubmitButton  from './SubmitButton'
 import QuestionList from './QuestionList'
 import Score from './Score'
+import Item from './Item'
+import Question from './Question'
 
 class Detail extends Component {
   state = {
@@ -24,7 +26,6 @@ class Detail extends Component {
   }
 
   onSubmitClick = () => {
-
     // Submit only if all questions are answered
     const selectionLength = this.props.selections.answers.length
     if(selectionLength === this.props.questions.length) {
@@ -71,8 +72,7 @@ class Detail extends Component {
     } else {
       answerStatusList = questions.map((question, qIndex) => (
         <div key={qIndex}>
-          <h3>{qIndex + 1} . {question.text}</h3>
-          {console.log(question.choices)}
+          <Question index={qIndex + 1} question={question.text} />
           {question.choices.map((choice, index) => {
             // make sure correct question
             if(answers[qIndex].question === question.text &&
@@ -81,43 +81,24 @@ class Detail extends Component {
                 // correct
                 if(choice.text === selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer === answers[qIndex].answer) {
-                    
-                    // increase the score
                     score = score + 1
-
-                    return(
-                      <li key={index} className="correct">
-                        <label>{choice.text}</label>
-                      </li>
-                    )
+                    return(<Item key={index} class="correct" text={choice.text} />)
                 }
 
                 if(choice.text !== selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer === answers[qIndex].answer) {
-                    return(
-                      <li key={index}>
-                        <label>{choice.text}</label>
-                      </li>
-                    )
+                    return(<Item key={index} text={choice.text} />)
                 }
                 
                 // wrong
                 if(choice.text === selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer !== answers[qIndex].answer) {
-                    return(
-                      <li key={index} className="wrong">
-                        <label>{choice.text}</label>
-                      </li>
-                    )
+                    return(<Item key={index} class="wrong" text={choice.text} />)
                 }
 
                 if(choice.text !== selections.answers[qIndex].answer &&
                   selections.answers[qIndex].answer !== answers[qIndex].answer) {
-                    return(
-                      <li key={index}>
-                        <label>{choice.text}</label>
-                      </li>
-                    )
+                    return(<Item key={index} text={choice.text} />)
                 }
             }
           })}

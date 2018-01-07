@@ -1,11 +1,12 @@
 import React  from 'react'
-
 import ListItem from './ListItem'
+import Question from './Question'
+
 const QuestionList = (props) => {
   const { index, question, onHandleOptionChange } = props
   return(
     <div>
-          <h3>{index + 1} . {question.text}</h3>
+          <Question index={index + 1} question={question.text} />
           {question.choices.map((choice, index) => (
             <ListItem 
               key={index}
