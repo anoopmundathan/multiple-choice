@@ -123,10 +123,12 @@ class Detail extends Component {
         <ul>
           {answerList}
         </ul>
-        Score : {score} / {questions.length}
-        <SubmitButton 
-          onSubmitClick={this.onSubmitClick} />
-      
+        {!submited ? (
+          <SubmitButton 
+            onSubmitClick={this.onSubmitClick} />
+        ) : (
+          <h1> Final Score : {(score / questions.length) * 100}</h1>
+        )}
       </div>
     )
   }
