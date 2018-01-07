@@ -7,14 +7,23 @@ export const GET_QUESTIONS = 'GET_QUESTIONS'
 export const SELECT_ANSWER = 'SELECT_ANSWER'
 export const UPDATE_ANSWER = 'UPDATE_ANSWER'
 export const GET_ANSWERS   = 'GET_ANSWERS'
+export const SERVER_ERROR   = 'SERVER_ERROR'
 
 export const getQuestions = () => dispatch => (
+  
   fetchQuestions()
     .then(questions => {
-      dispatch({
-        type: GET_QUESTIONS,
-        questions
-      })
+      if(questions.error) {
+        dispatch({
+          type: SERVER_ERROR,
+          error: 'Server not available'
+        })
+      } else {
+        dispatch({
+          type: GET_QUESTIONS,
+          questions
+        })
+      }
     })
 )
 

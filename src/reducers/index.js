@@ -5,6 +5,7 @@ import {
   SELECT_ANSWER,
   UPDATE_ANSWER,
   GET_ANSWERS,
+  SERVER_ERROR
  } from '../actions'
 
 const questions = (state = [], action) => {
@@ -12,6 +13,17 @@ const questions = (state = [], action) => {
   switch(action.type) {
     case GET_QUESTIONS:
       return questions
+    default:
+      return state
+  }
+}
+
+const error = (state = {}, action) => {
+  switch(action.type) {
+    case SERVER_ERROR:
+      return {
+        error: action.error
+      }
     default:
       return state
   }
@@ -62,6 +74,7 @@ const selections = (state = { answers: [] }, action ) => {
 export default combineReducers({
   questions,
   selections,
-  answers
+  answers,
+  error
 })
 

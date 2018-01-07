@@ -56,7 +56,7 @@ class Detail extends Component {
     let score = 0;
     
     const { loaded, submited } = this.state
-    const { questions, answers, selections } = this.props
+    const { questions, answers, selections, error } = this.props
     
     let questionList = null
     let answerStatusList = null
@@ -108,12 +108,20 @@ class Detail extends Component {
 
     return(
       <div className="detail">
-      
+        
+        <div className="error">
+          <h2>{error.error}</h2>
+        </div>
+
         {!loaded && (
-          <div>Loading questions...</div>
+          <div className="loading">
+            <h2>
+              Loading questions...
+            </h2>
+          </div>
         )}
 
-        {!submited && (
+        {!error.error && !submited ? (
           <div>
             <ul>
               {questionList}
@@ -121,6 +129,8 @@ class Detail extends Component {
             <SubmitButton 
               onSubmitClick={this.onSubmitClick} />
           </div>
+        ) : (
+          null
         )}
 
         {submited && (
@@ -148,11 +158,12 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const mapStateToProps = ({ questions, selections, answers }) => {
+const mapStateToProps = ({ questions, selections, answers, error }) => {
   return { 
     questions,
     selections,
-    answers
+    answers,
+    error
   }
 }
 

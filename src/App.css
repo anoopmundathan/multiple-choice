@@ -54,10 +54,15 @@ label {
   border: 1px solid red;
 }
 
-/* .final-score h2 {
-  margin: 0;
-  padding: 0;
-} */
+.error {
+  margin-top: 30px;
+  color: rgba(255, 0, 0, 0.973);
+}
+
+.loading,
+.error {
+  text-align: center
+}
 
 .correct {
   background: rgb(17, 190, 17);

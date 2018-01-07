@@ -5,6 +5,9 @@ export const fetchQuestions = () => {
   return fetch(`${api}/questions`)
     .then(response => response.json())
     .then(data => data)
+    .catch(error => ({
+      error: 'Server is down'
+    }))
 }
 
 // POST /questions
